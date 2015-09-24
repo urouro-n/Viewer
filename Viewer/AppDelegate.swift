@@ -9,12 +9,23 @@
 import UIKit
 import XCGLogger
 
+let log = XCGLogger.defaultInstance()
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        // XCGLogger Setup
+        log.setup(XCGLogger.LogLevel.Debug,
+            showThreadName: false,
+            showLogLevel: true,
+            showFileNames: true,
+            showLineNumbers: true,
+            writeToFile: nil,
+            fileLogLevel: nil)
+        
         return true
     }
 
