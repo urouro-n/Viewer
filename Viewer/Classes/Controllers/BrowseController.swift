@@ -132,7 +132,7 @@ class BrowseController: UIViewController, MWPhotoBrowserDelegate {
                 let browser: MWPhotoBrowser = MWPhotoBrowser(delegate: self)
                 browser.displayNavArrows = true
                 browser.displayActionButton = true
-                // browser.actionButton = UIBarButtonItem(image: iconImage, style: .Plain, target: nil, action: nil)
+                browser.actionButton = UIBarButtonItem(image: iconImage, style: .Plain, target: nil, action: nil)
                 self.navigationController?.pushViewController(browser, animated: true)
             })
         })

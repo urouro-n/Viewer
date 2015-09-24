@@ -17,17 +17,26 @@ PODS:
 DEPENDENCIES:
   - BABFrameObservingInputAccessoryView
   - CRToast
-  - MWPhotoBrowser
+  - MWPhotoBrowser (from `https://github.com/urouro/MWPhotoBrowser.git`)
   - NYXImagesKit
   - SVProgressHUD
   - XCGLogger
+
+EXTERNAL SOURCES:
+  MWPhotoBrowser:
+    :git: https://github.com/urouro/MWPhotoBrowser.git
+
+CHECKOUT OPTIONS:
+  MWPhotoBrowser:
+    :commit: e4ec8fd33fc83c4ffdaeb8af4dc6b7c8709ba52d
+    :git: https://github.com/urouro/MWPhotoBrowser.git
 
 SPEC CHECKSUMS:
   BABFrameObservingInputAccessoryView: c0fd4d0f2e24ee3e8365ad8bb7143e5255c05d7e
   CRToast: b087127369b4c603726ef6249d74d0d737629ab8
   DACircularProgress: 4dd437c0fc3da5161cb289e07ac449493d41db71
   MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
-  MWPhotoBrowser: ba0d0c09ffda3a7ea10093518738c502c1c7141c
+  MWPhotoBrowser: cebf3540db6b5116f1ad3e3e4c1b9aa11c0bf25f
   NYXImagesKit: 8163e3335a40eaa173ca5bbbf81fafb57d3947eb
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
   SVProgressHUD: 748080e4f36e603f6c02aec292664239df5279c1

@@ -175,7 +175,7 @@ static void * MWVideoPlayerObservation = &MWVideoPlayerObservation;
         _previousButton = [[UIBarButtonItem alloc] initWithImage:previousButtonImage style:UIBarButtonItemStylePlain target:self action:@selector(gotoPreviousPage)];
         _nextButton = [[UIBarButtonItem alloc] initWithImage:nextButtonImage style:UIBarButtonItemStylePlain target:self action:@selector(gotoNextPage)];
     }
-    if (self.displayActionButton) {
+    if (self.displayActionButton && self.actionButton == nil) {
         _actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(actionButtonPressed:)];
     }
     
@@ -1522,6 +1522,14 @@ static void * MWVideoPlayerObservation = &MWVideoPlayerObservation;
         if (!_viewIsActive)
             [self tilePages]; // Force tiling if view is not visible
     }
+}
+
+- (void)setActionButton:(UIBarButtonItem *)actionButton
+{
+    actionButton.target = self;
+    actionButton.action = @selector(actionButtonPressed:);
+    
+    _actionButton = actionButton;
 }
 
 #pragma mark - Misc
