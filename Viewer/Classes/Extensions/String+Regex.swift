@@ -18,7 +18,7 @@ extension String {
     :returns: bool
     */
     func hasMatch(pattern: String) -> Bool {
-        var options: NSRegularExpressionOptions = NSRegularExpressionOptions.DotMatchesLineSeparators
+        let options: NSRegularExpressionOptions = NSRegularExpressionOptions.DotMatchesLineSeparators
         
         let regex: NSRegularExpression? = try! NSRegularExpression(pattern:pattern, options: options)
         
