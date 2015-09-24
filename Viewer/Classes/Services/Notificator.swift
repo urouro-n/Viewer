@@ -6,7 +6,8 @@
 //  Copyright © 2015年 UROURO. All rights reserved.
 //
 
-import Foundation
+import UIKit
+import CRToast
 
 class Notificator : NSObject {
     

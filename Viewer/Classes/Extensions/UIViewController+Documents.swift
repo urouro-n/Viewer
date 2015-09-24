@@ -6,7 +6,7 @@
 //  Copyright © 2015年 UROURO. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 extension UIViewController {
     var documentsDirectory: String {

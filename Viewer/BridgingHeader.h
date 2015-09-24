@@ -10,5 +10,4 @@
 #import <CRToast/CRToast.h>
 #import <SVProgressHUD/SVProgressHUD.h>
 #import <MWPhotoBrowser/MWPhotoBrowser.h>
-#import <NSDate-Escort/NSDate+Escort.h>
 #import <NYXImagesKit/NYXImagesKit.h>

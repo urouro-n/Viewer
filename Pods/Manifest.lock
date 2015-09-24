@@ -3,46 +3,34 @@ PODS:
   - CRToast (0.0.8)
   - DACircularProgress (2.3.1)
   - MBProgressHUD (0.9.1)
-  - MWPhotoBrowser (1.4.1):
-    - DACircularProgress
-    - MBProgressHUD (~> 0.8)
-    - PSTCollectionView (~> 1.2)
-    - SDWebImage (~> 3.7)
-  - NSDate-Escort (1.5.1)
+  - MWPhotoBrowser (2.1.1):
+    - DACircularProgress (~> 2.3)
+    - MBProgressHUD (~> 0.9)
+    - SDWebImage (!= 3.7.2, ~> 3.7)
   - NYXImagesKit (2.3)
-  - PSTCollectionView (1.2.3)
   - SDWebImage (3.7.3):
     - SDWebImage/Core (= 3.7.3)
   - SDWebImage/Core (3.7.3)
   - SVProgressHUD (1.1.3)
+  - XCGLogger (3.0)
 
 DEPENDENCIES:
   - BABFrameObservingInputAccessoryView
   - CRToast
-  - MWPhotoBrowser (from `https://github.com/urouro/MWPhotoBrowser.git`)
-  - NSDate-Escort
+  - MWPhotoBrowser
   - NYXImagesKit
   - SVProgressHUD
-
-EXTERNAL SOURCES:
-  MWPhotoBrowser:
-    :git: https://github.com/urouro/MWPhotoBrowser.git
-
-CHECKOUT OPTIONS:
-  MWPhotoBrowser:
-    :commit: b9d523483c8da236514753784a5bfa55d58316e1
-    :git: https://github.com/urouro/MWPhotoBrowser.git
+  - XCGLogger
 
 SPEC CHECKSUMS:
   BABFrameObservingInputAccessoryView: c0fd4d0f2e24ee3e8365ad8bb7143e5255c05d7e
   CRToast: b087127369b4c603726ef6249d74d0d737629ab8
   DACircularProgress: 4dd437c0fc3da5161cb289e07ac449493d41db71
   MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
-  MWPhotoBrowser: 2531e682860d62b8a7ba8659de02eb9040e431e5
-  NSDate-Escort: 2b9a6a3c9fe5a5c84fbdf1e9d55b2f9952deb15b
+  MWPhotoBrowser: ba0d0c09ffda3a7ea10093518738c502c1c7141c
   NYXImagesKit: 8163e3335a40eaa173ca5bbbf81fafb57d3947eb
-  PSTCollectionView: 6749df92885353521f55279a7ce2b293762e2be4
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
   SVProgressHUD: 748080e4f36e603f6c02aec292664239df5279c1
+  XCGLogger: 5802533aff8bafc8b3b9776ab8972576f31d0a4e
 
 COCOAPODS: 0.38.2
