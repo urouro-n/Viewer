@@ -60,6 +60,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework 'Pods/NYXImagesKit.framework'
   install_framework 'Pods/SDWebImage.framework'
   install_framework 'Pods/SVProgressHUD.framework'
+  install_framework 'Pods/SwiftDate.framework'
   install_framework 'Pods/XCGLogger.framework'
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
@@ -71,5 +72,6 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework 'Pods/NYXImagesKit.framework'
   install_framework 'Pods/SDWebImage.framework'
   install_framework 'Pods/SVProgressHUD.framework'
+  install_framework 'Pods/SwiftDate.framework'
   install_framework 'Pods/XCGLogger.framework'
 fi

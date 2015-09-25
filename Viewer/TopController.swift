@@ -8,13 +8,16 @@
 
 import UIKit
 import BABFrameObservingInputAccessoryView
+import MWPhotoBrowser
 
-class TopController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class TopController: UIViewController, UITableViewDataSource, UITableViewDelegate, MWPhotoBrowserDelegate {
     
     @IBOutlet private weak var tableView: UITableView!
     @IBOutlet private weak var textField: UITextField!
     @IBOutlet private weak var toolbarContainerVerticalSpacingConstraint: NSLayoutConstraint!
     
+    private var directories: [String] = []
+    private var files: [MWPhoto] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,6 +37,14 @@ class TopController: UIViewController, UITableViewDataSource, UITableViewDelegat
         }
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
+        
+        self.reloadData()
+    }
+    
     
     // MARK: - Action
     
@@ -44,6 +55,17 @@ class TopController: UIViewController, UITableViewDataSource, UITableViewDelegat
     @IBAction func onMoreButton(sender: UIButton) {
         // TODO: show information page
     }
+    
+    
+    // MARK: - Segue
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "TopToImageList" {
+            let controller: ImageListController = segue.destinationViewController as! ImageListController
+            let directory: String = sender as! String
+            controller.directory = (self.documentsDirectory as NSString).stringByAppendingPathComponent(directory)
+        }
+    }
 
     
     // MARK: - UITableViewDataSource
@@ -53,14 +75,16 @@ class TopController: UIViewController, UITableViewDataSource, UITableViewDelegat
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return self.directories.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell: DayCell = tableView.dequeueReusableCellWithIdentifier("DayCell") as! DayCell
         
-        cell.titleLabel.text = "2015/01/01"
-        cell.countLabel.text = "(10)"
+        cell.titleLabel.text = self.directories[indexPath.row]
+        
+        // TODO: show number of images
+        cell.countLabel.text = ""
         
         return cell
     }
@@ -69,6 +93,52 @@ class TopController: UIViewController, UITableViewDataSource, UITableViewDelegat
     // MARK: - UITableViewDelegate
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let directory: String = self.directories[indexPath.row]
+        
+        self.performSegueWithIdentifier("TopToImageList", sender: directory)
+    }
+    
+    
+    // MARK: - MWPhotoBrowserDelegate
+    
+    func numberOfPhotosInPhotoBrowser(photoBrowser: MWPhotoBrowser!) -> UInt {
+        return UInt(self.files.count)
+    }
+    
+    func photoBrowser(photoBrowser: MWPhotoBrowser!, photoAtIndex index: UInt) -> MWPhotoProtocol! {
+        if index < UInt(self.files.count) {
+            return self.files[Int(index)]
+        }
+        
+        return nil
+    }
+    
+    
+    // MARK: - Private
+    
+    private func reloadData() {
+        /**
+        * Documents 下のディレクトリの一覧を取得す
+        */
+        self.directories.removeAll(keepCapacity: false)
+        
+        let items: [AnyObject]? = try! NSFileManager.defaultManager().contentsOfDirectoryAtPath(self.documentsDirectory)
+        
+        if items != nil {
+            for item: String in items as! [String] {
+                let path: String = (self.documentsDirectory as NSString).stringByAppendingPathComponent(item)
+                var isDirectory: ObjCBool = false
+                NSFileManager.defaultManager().fileExistsAtPath(path, isDirectory: &isDirectory)
+                
+                if isDirectory {
+                    self.directories.append(item)
+                }
+            }
+        }
+        
+        log.debug("directories=\(self.directories)")
+        
+        self.tableView.reloadData()
     }
     
 }

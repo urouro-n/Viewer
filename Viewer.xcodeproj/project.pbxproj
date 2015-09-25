@@ -24,6 +24,9 @@
 		ABFDC57B1BB3CF3600ACD85A /* String+Regex.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABFDC57A1BB3CF3600ACD85A /* String+Regex.swift */; settings = {ASSET_TAGS = (); }; };
 		ABFDC5841BB412D800ACD85A /* UIViewController+Documents.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABFDC5831BB412D800ACD85A /* UIViewController+Documents.swift */; settings = {ASSET_TAGS = (); }; };
 		ABFDC5861BB4130F00ACD85A /* Notificator.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABFDC5851BB4130F00ACD85A /* Notificator.swift */; settings = {ASSET_TAGS = (); }; };
+		ABFDC5931BB558FD00ACD85A /* ImageListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABFDC5921BB558FD00ACD85A /* ImageListController.swift */; settings = {ASSET_TAGS = (); }; };
+		ABFDC5951BB55BD000ACD85A /* ImageListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABFDC5941BB55BD000ACD85A /* ImageListCell.swift */; settings = {ASSET_TAGS = (); }; };
+		ABFDC5991BB55FF300ACD85A /* CALayer+Storyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABFDC5981BB55FF300ACD85A /* CALayer+Storyboard.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +73,9 @@
 		ABFDC57A1BB3CF3600ACD85A /* String+Regex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "String+Regex.swift"; path = "Classes/Extensions/String+Regex.swift"; sourceTree = "<group>"; };
 		ABFDC5831BB412D800ACD85A /* UIViewController+Documents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIViewController+Documents.swift"; path = "Classes/Extensions/UIViewController+Documents.swift"; sourceTree = "<group>"; };
 		ABFDC5851BB4130F00ACD85A /* Notificator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notificator.swift; sourceTree = "<group>"; };
+		ABFDC5921BB558FD00ACD85A /* ImageListController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImageListController.swift; path = Classes/Controllers/ImageListController.swift; sourceTree = "<group>"; };
+		ABFDC5941BB55BD000ACD85A /* ImageListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImageListCell.swift; path = Classes/Views/ImageListCell.swift; sourceTree = "<group>"; };
+		ABFDC5981BB55FF300ACD85A /* CALayer+Storyboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "CALayer+Storyboard.swift"; path = "Classes/Extensions/CALayer+Storyboard.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -186,6 +192,7 @@
 				ABFDC5191BAD524800ACD85A /* TopController.swift */,
 				ABFDC5511BB2C2CF00ACD85A /* SearchController.swift */,
 				ABFDC5751BB3C75900ACD85A /* BrowseController.swift */,
+				ABFDC5921BB558FD00ACD85A /* ImageListController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -204,6 +211,7 @@
 			children = (
 				ABFDC54B1BB2BEA900ACD85A /* DayCell.swift */,
 				ABFDC54F1BB2C26C00ACD85A /* WebListCell.swift */,
+				ABFDC5941BB55BD000ACD85A /* ImageListCell.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -214,6 +222,7 @@
 				ABFDC5541BB2C4C700ACD85A /* UIColor+App.swift */,
 				ABFDC57A1BB3CF3600ACD85A /* String+Regex.swift */,
 				ABFDC5831BB412D800ACD85A /* UIViewController+Documents.swift */,
+				ABFDC5981BB55FF300ACD85A /* CALayer+Storyboard.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -418,8 +427,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				ABFDC51A1BAD524800ACD85A /* TopController.swift in Sources */,
+				ABFDC5951BB55BD000ACD85A /* ImageListCell.swift in Sources */,
 				ABFDC5521BB2C2CF00ACD85A /* SearchController.swift in Sources */,
 				ABFDC5861BB4130F00ACD85A /* Notificator.swift in Sources */,
+				ABFDC5991BB55FF300ACD85A /* CALayer+Storyboard.swift in Sources */,
+				ABFDC5931BB558FD00ACD85A /* ImageListController.swift in Sources */,
 				ABFDC57B1BB3CF3600ACD85A /* String+Regex.swift in Sources */,
 				ABFDC54C1BB2BEA900ACD85A /* DayCell.swift in Sources */,
 				ABFDC5501BB2C26C00ACD85A /* WebListCell.swift in Sources */,
@@ -569,11 +581,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Viewer/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.urouro.Viewer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = Viewer/BridgingHeader.h;
 			};
 			name = Debug;
@@ -584,11 +598,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Viewer/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.urouro.Viewer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = Viewer/BridgingHeader.h;
 			};
 			name = Release;

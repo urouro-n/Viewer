@@ -9,6 +9,7 @@
 import UIKit
 import MWPhotoBrowser
 import SVProgressHUD
+import SwiftDate
 
 class BrowseController: UIViewController, MWPhotoBrowserDelegate {
     
@@ -106,7 +107,7 @@ class BrowseController: UIViewController, MWPhotoBrowserDelegate {
                 print("URL=\(URLString)")
                 
                 let photo: MWPhoto = MWPhoto(image: image)
-                photo.caption = URL.lastPathComponent! + "\n" + "(1,280 x 960)"
+                photo.caption = URL.lastPathComponent! // + "\n" + "(1,280 x 960)"
                 self.photos.append(photo)
             }
             
@@ -157,32 +158,34 @@ class BrowseController: UIViewController, MWPhotoBrowserDelegate {
         /**
         画像を Documents に保存
         */
-//        let photo: MWPhoto = self.photos[Int(index)]
-//        let image: UIImage = photo.image
-//        let imageData: NSData = UIImagePNGRepresentation(image)!
-//        
-//        print("save / image=\(image)")
-//        
-//        let imageName: NSString = photo.caption
-//        let date: NSDate = NSDate()
-//        let folderName: NSString = NSString(format: "%04d%02d%02d", date.year, date.month, date.day)
-//        let folderPath: NSString = self.documentsDirectory + "/" + (folderName as String)
-//        print("folderPath=\(folderPath)")
-//        
-//        try! NSFileManager.defaultManager().createDirectoryAtPath(folderPath as String, withIntermediateDirectories: false, attributes: nil)
-//        
-//        let filePath: NSString =  folderPath.stringByAppendingPathComponent(imageName as String)
-//        print("filePath=\(filePath)")
-//
-//        do {
-//            try imageData.writeToFile(filePath as String, options: NSDataWritingOptions.AtomicWrite)
-//        } catch  {
-//            print("writeToFile Error / error=\(error)")
-//            Notificator.failure("保存に失敗しました")
-//            return
-//        }
-//        
-//        Notificator.success("保存しました")
+        let photo: MWPhoto = self.photos[Int(index)]
+        let image: UIImage = photo.image
+        let imageData: NSData = UIImagePNGRepresentation(image)!
+        
+        print("save / image=\(image)")
+        
+        let imageName: NSString = photo.caption
+        let date: NSDate = NSDate()
+        let folderName: NSString = NSString(format: "%04d%02d%02d", date.year, date.month, date.day)
+        let folderPath: NSString = self.documentsDirectory + "/" + (folderName as String)
+        print("folderPath=\(folderPath)")
+        
+        if NSFileManager.defaultManager().fileExistsAtPath(folderPath as String) == false {
+            try! NSFileManager.defaultManager().createDirectoryAtPath(folderPath as String, withIntermediateDirectories: false, attributes: nil)
+        }
+        
+        let filePath: NSString =  folderPath.stringByAppendingPathComponent(imageName as String)
+        print("filePath=\(filePath)")
+
+        do {
+            try imageData.writeToFile(filePath as String, options: NSDataWritingOptions.AtomicWrite)
+        } catch  {
+            print("writeToFile Error / error=\(error)")
+            Notificator.failure("保存に失敗しました")
+            return
+        }
+        
+        Notificator.success("保存しました")
     }
     
 }

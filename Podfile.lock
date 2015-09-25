@@ -12,6 +12,7 @@ PODS:
     - SDWebImage/Core (= 3.7.3)
   - SDWebImage/Core (3.7.3)
   - SVProgressHUD (1.1.3)
+  - SwiftDate (1.1)
   - XCGLogger (3.0)
 
 DEPENDENCIES:
@@ -20,6 +21,7 @@ DEPENDENCIES:
   - MWPhotoBrowser (from `https://github.com/urouro/MWPhotoBrowser.git`)
   - NYXImagesKit
   - SVProgressHUD
+  - SwiftDate
   - XCGLogger
 
 EXTERNAL SOURCES:
@@ -28,7 +30,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   MWPhotoBrowser:
-    :commit: e4ec8fd33fc83c4ffdaeb8af4dc6b7c8709ba52d
+    :commit: cf6f681273e284b0fda7b7c2007c15e90000c6ed
     :git: https://github.com/urouro/MWPhotoBrowser.git
 
 SPEC CHECKSUMS:
@@ -40,6 +42,7 @@ SPEC CHECKSUMS:
   NYXImagesKit: 8163e3335a40eaa173ca5bbbf81fafb57d3947eb
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
   SVProgressHUD: 748080e4f36e603f6c02aec292664239df5279c1
+  SwiftDate: e65ca080d7ca82071112d51ecc10bb7714677a9f
   XCGLogger: 5802533aff8bafc8b3b9776ab8972576f31d0a4e
 
 COCOAPODS: 0.38.2
