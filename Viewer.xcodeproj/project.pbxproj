@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		A43EA7127F95C429EFDCF6D3 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7166B9CD020399215F6237BD /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		AB5BEFE11BB5959800E96FFE /* AdBlockList.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB5BEFDF1BB5959800E96FFE /* AdBlockList.swift */; settings = {ASSET_TAGS = (); }; };
+		AB5BEFE21BB5959800E96FFE /* FilteringURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB5BEFE01BB5959800E96FFE /* FilteringURLProtocol.swift */; settings = {ASSET_TAGS = (); }; };
+		AB5BEFE81BB5AA1400E96FFE /* blackList.txt in Resources */ = {isa = PBXBuildFile; fileRef = AB5BEFE71BB5AA1400E96FFE /* blackList.txt */; settings = {ASSET_TAGS = (); }; };
 		ABFDC5181BAD524800ACD85A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABFDC5171BAD524800ACD85A /* AppDelegate.swift */; };
 		ABFDC51A1BAD524800ACD85A /* TopController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABFDC5191BAD524800ACD85A /* TopController.swift */; };
 		ABFDC51D1BAD524800ACD85A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ABFDC51B1BAD524800ACD85A /* Main.storyboard */; };
@@ -50,6 +53,9 @@
 		2020FE040D234FFD1E4061E0 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		7166B9CD020399215F6237BD /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		75A4961A03B72AA32BA3F972 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		AB5BEFDF1BB5959800E96FFE /* AdBlockList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdBlockList.swift; sourceTree = "<group>"; };
+		AB5BEFE01BB5959800E96FFE /* FilteringURLProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilteringURLProtocol.swift; sourceTree = "<group>"; };
+		AB5BEFE71BB5AA1400E96FFE /* blackList.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = blackList.txt; sourceTree = "<group>"; };
 		ABFDC5141BAD524800ACD85A /* Viewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Viewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ABFDC5171BAD524800ACD85A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ABFDC5191BAD524800ACD85A /* TopController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopController.swift; sourceTree = "<group>"; };
@@ -150,6 +156,7 @@
 				ABFDC5451BAD528D00ACD85A /* Classes */,
 				ABFDC51E1BAD524800ACD85A /* Assets.xcassets */,
 				ABFDC5231BAD524800ACD85A /* Info.plist */,
+				AB5BEFE71BB5AA1400E96FFE /* blackList.txt */,
 				ABFDC5561BB2CCC300ACD85A /* BridgingHeader.h */,
 			);
 			path = Viewer;
@@ -230,6 +237,8 @@
 		ABFDC5771BB3CF0200ACD85A /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				AB5BEFDF1BB5959800E96FFE /* AdBlockList.swift */,
+				AB5BEFE01BB5959800E96FFE /* FilteringURLProtocol.swift */,
 				ABFDC5781BB3CF0200ACD85A /* HTMLParser.swift */,
 				ABFDC5851BB4130F00ACD85A /* Notificator.swift */,
 			);
@@ -351,6 +360,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AB5BEFE81BB5AA1400E96FFE /* blackList.txt in Resources */,
 				ABFDC5221BAD524800ACD85A /* LaunchScreen.storyboard in Resources */,
 				ABFDC51F1BAD524800ACD85A /* Assets.xcassets in Resources */,
 				ABFDC51D1BAD524800ACD85A /* Main.storyboard in Resources */,
@@ -435,10 +445,12 @@
 				ABFDC57B1BB3CF3600ACD85A /* String+Regex.swift in Sources */,
 				ABFDC54C1BB2BEA900ACD85A /* DayCell.swift in Sources */,
 				ABFDC5501BB2C26C00ACD85A /* WebListCell.swift in Sources */,
+				AB5BEFE11BB5959800E96FFE /* AdBlockList.swift in Sources */,
 				ABFDC5181BAD524800ACD85A /* AppDelegate.swift in Sources */,
 				ABFDC5791BB3CF0200ACD85A /* HTMLParser.swift in Sources */,
 				ABFDC5761BB3C75900ACD85A /* BrowseController.swift in Sources */,
 				ABFDC5841BB412D800ACD85A /* UIViewController+Documents.swift in Sources */,
+				AB5BEFE21BB5959800E96FFE /* FilteringURLProtocol.swift in Sources */,
 				ABFDC5551BB2C4C700ACD85A /* UIColor+App.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

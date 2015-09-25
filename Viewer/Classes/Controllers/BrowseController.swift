@@ -16,7 +16,7 @@ class BrowseController: UIViewController, MWPhotoBrowserDelegate, UIWebViewDeleg
     
     @IBOutlet private weak var webView: UIWebView!
     
-    var URL: NSURL = NSURL(string: "https://www.google.com")!
+    var URL: NSURL?
     
     private var progressProxy: NJKWebViewProgress?
     private var progressView: NJKWebViewProgressView?
@@ -44,13 +44,21 @@ class BrowseController: UIViewController, MWPhotoBrowserDelegate, UIWebViewDeleg
         shareItem.tintColor = UIColor.appLightGrayColor()
         self.navigationItem.rightBarButtonItem = shareItem
         
-        self.webView.loadRequest(NSURLRequest(URL: self.URL))
+        self.webView.loadRequest(NSURLRequest(URL: self.URL!))
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
+        NSURLProtocol.registerClass(FilteringURLProtocol) // Ad block
+        
         self.navigationController?.navigationBar.addSubview(self.progressView!)
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        NSURLProtocol.unregisterClass(FilteringURLProtocol)
+        
+        super.viewWillDisappear(animated)
     }
     
     
@@ -71,14 +79,36 @@ class BrowseController: UIViewController, MWPhotoBrowserDelegate, UIWebViewDeleg
         url = (url != nil) ? url! + self.webView!.stringByEvaluatingJavaScriptFromString("location.host")! : nil
         
         if html == nil || url == nil {
-            print("HTML body or url nil")
+            log.debug("HTML body or url nil")
             return
         }
         
         let result: [String] = HTMLParser.parseImageURL(html!)
-        print("result=\(result)")
+        log.debug("result=\(result)")
         
         self.openImageViewer(result, currentURL: url)
+    }
+    
+    @IBAction func onBackButton(sender: UIBarButtonItem) {
+        self.webView.goBack()
+    }
+    
+    @IBAction func onForwardButton(sender: UIBarButtonItem) {
+        self.webView.goForward()
+    }
+    
+    // MARK: - UIWebViewDelegate
+    
+    func webViewDidStartLoad(webView: UIWebView) {
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+    }
+    
+    func webViewDidFinishLoad(webView: UIWebView) {
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+    }
+    
+    func webView(webView: UIWebView, didFailLoadWithError error: NSError?) {
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
     }
     
     
@@ -114,35 +144,37 @@ class BrowseController: UIViewController, MWPhotoBrowserDelegate, UIWebViewDeleg
                     URLString = currentURL! + URLString
                 }
                 
+                URLString = URLString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLFragmentAllowedCharacterSet())!
+                
+                log.debug("URLString=\(URLString)")
+                
                 let URL: NSURL = NSURL(string: URLString)!
                 let data: NSData? = NSData(contentsOfURL: URL)
                 
                 if data == nil {
-                    print("URLString=\(URLString), nil data")
+                    log.debug("URLString=\(URLString), nil data")
                     continue
                 }
                 
                 let image: UIImage? = UIImage(data: data!)
                 
                 if image == nil {
-                    print("URLString=\(URLString), nil image")
+                    log.debug("URLString=\(URLString), nil image")
                     continue
                 }
                 
                 // 1x1 の画像は対象から外す
                 if image!.size.width == 1 && image!.size.height == 1 {
-                    print("URLString=\(URLString), 1x1 image")
+                    log.debug("URLString=\(URLString), 1x1 image")
                     continue
                 }
                 
-                print("URL=\(URLString)")
+                log.debug("URL=\(URLString)")
                 
                 let photo: MWPhoto = MWPhoto(image: image)
                 photo.caption = URL.lastPathComponent! // + "\n" + "(1,280 x 960)"
                 self.photos.append(photo)
             }
-            
-            print("photos=\(self.photos)")
             
             dispatch_sync(dispatch_get_main_queue(), {
                 
@@ -193,25 +225,25 @@ class BrowseController: UIViewController, MWPhotoBrowserDelegate, UIWebViewDeleg
         let image: UIImage = photo.image
         let imageData: NSData = UIImagePNGRepresentation(image)!
         
-        print("save / image=\(image)")
+        log.debug("save / image=\(image)")
         
         let imageName: NSString = photo.caption
         let date: NSDate = NSDate()
         let folderName: NSString = NSString(format: "%04d%02d%02d", date.year, date.month, date.day)
         let folderPath: NSString = self.documentsDirectory + "/" + (folderName as String)
-        print("folderPath=\(folderPath)")
+        log.debug("folderPath=\(folderPath)")
         
         if NSFileManager.defaultManager().fileExistsAtPath(folderPath as String) == false {
             try! NSFileManager.defaultManager().createDirectoryAtPath(folderPath as String, withIntermediateDirectories: false, attributes: nil)
         }
         
         let filePath: NSString =  folderPath.stringByAppendingPathComponent(imageName as String)
-        print("filePath=\(filePath)")
+        log.debug("filePath=\(filePath)")
 
         do {
             try imageData.writeToFile(filePath as String, options: NSDataWritingOptions.AtomicWrite)
         } catch  {
-            print("writeToFile Error / error=\(error)")
+            log.debug("writeToFile Error / error=\(error)")
             Notificator.failure("保存に失敗しました")
             return
         }

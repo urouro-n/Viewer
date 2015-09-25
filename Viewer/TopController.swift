@@ -8,16 +8,14 @@
 
 import UIKit
 import BABFrameObservingInputAccessoryView
-import MWPhotoBrowser
 
-class TopController: UIViewController, UITableViewDataSource, UITableViewDelegate, MWPhotoBrowserDelegate {
+class TopController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate {
     
     @IBOutlet private weak var tableView: UITableView!
     @IBOutlet private weak var textField: UITextField!
     @IBOutlet private weak var toolbarContainerVerticalSpacingConstraint: NSLayoutConstraint!
     
     private var directories: [String] = []
-    private var files: [MWPhoto] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,7 +47,12 @@ class TopController: UIViewController, UITableViewDataSource, UITableViewDelegat
     // MARK: - Action
     
     @IBAction func onSearchButton(sender: UIButton) {
-        self.performSegueWithIdentifier("TopToBrowse", sender: nil)
+        if let text = self.textField.text {
+            if text.characters.count > 0 {
+                self.view.endEditing(true)
+                self.performSegueWithIdentifier("TopToBrowse", sender: text)
+            }
+        }
     }
     
     @IBAction func onMoreButton(sender: UIButton) {
@@ -64,6 +67,18 @@ class TopController: UIViewController, UITableViewDataSource, UITableViewDelegat
             let controller: ImageListController = segue.destinationViewController as! ImageListController
             let directory: String = sender as! String
             controller.directory = (self.documentsDirectory as NSString).stringByAppendingPathComponent(directory)
+        } else if segue.identifier == "TopToBrowse" {
+            if let urlString = sender as? String {
+                var url: String = urlString
+                if !url.hasMatch("^http://") && !url.hasMatch("^https://") {
+                    url = "http://" + url
+                }
+                log.debug("url=\(url)")
+                
+                let nav: UINavigationController = segue.destinationViewController as! UINavigationController
+                let controller: BrowseController = nav.topViewController as! BrowseController
+                controller.URL = NSURL(string: url)
+            }
         }
     }
 
@@ -99,18 +114,17 @@ class TopController: UIViewController, UITableViewDataSource, UITableViewDelegat
     }
     
     
-    // MARK: - MWPhotoBrowserDelegate
+    // MARK: - UITextFieldDelegate
     
-    func numberOfPhotosInPhotoBrowser(photoBrowser: MWPhotoBrowser!) -> UInt {
-        return UInt(self.files.count)
-    }
-    
-    func photoBrowser(photoBrowser: MWPhotoBrowser!, photoAtIndex index: UInt) -> MWPhotoProtocol! {
-        if index < UInt(self.files.count) {
-            return self.files[Int(index)]
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        if let text = textField.text {
+            if text.characters.count > 0 {
+                self.view.endEditing(true)
+                self.performSegueWithIdentifier("TopToBrowse", sender: text)
+            }
         }
         
-        return nil
+        return true
     }
     
     
