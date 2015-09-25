@@ -6,6 +6,7 @@ use_frameworks!
 pod 'BABFrameObservingInputAccessoryView'
 pod 'CRToast'
 pod 'MWPhotoBrowser', git: 'https://github.com/urouro/MWPhotoBrowser.git'
+pod 'NJKWebViewProgress'
 pod 'NYXImagesKit'
 pod 'SVProgressHUD'
 pod 'SwiftDate'

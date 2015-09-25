@@ -8,19 +8,33 @@
 
 import UIKit
 import MWPhotoBrowser
+import NJKWebViewProgress
 import SVProgressHUD
 import SwiftDate
 
-class BrowseController: UIViewController, MWPhotoBrowserDelegate {
+class BrowseController: UIViewController, MWPhotoBrowserDelegate, UIWebViewDelegate, NJKWebViewProgressDelegate {
     
     @IBOutlet private weak var webView: UIWebView!
     
     var URL: NSURL = NSURL(string: "https://www.google.com")!
     
+    private var progressProxy: NJKWebViewProgress?
+    private var progressView: NJKWebViewProgressView?
     private var photos: [MWPhoto] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.progressProxy = NJKWebViewProgress()
+        self.webView.delegate = self.progressProxy
+        self.progressProxy!.webViewProxyDelegate = self
+        self.progressProxy!.progressDelegate = self
+        
+        let progressBarHeight: CGFloat = 2.0
+        let navigationBarBounds: CGRect = (self.navigationController?.navigationBar.bounds)!
+        let barFrame: CGRect = CGRectMake(0, navigationBarBounds.size.height - progressBarHeight, navigationBarBounds.size.width, progressBarHeight)
+        self.progressView = NJKWebViewProgressView(frame: barFrame)
+        self.progressView!.autoresizingMask = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleTopMargin]
         
         let closeItem: UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "close-button"), style: UIBarButtonItemStyle.Plain, target: self, action: "onCloseItem:")
         closeItem.tintColor = UIColor.appLightGrayColor()
@@ -31,6 +45,12 @@ class BrowseController: UIViewController, MWPhotoBrowserDelegate {
         self.navigationItem.rightBarButtonItem = shareItem
         
         self.webView.loadRequest(NSURLRequest(URL: self.URL))
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.navigationController?.navigationBar.addSubview(self.progressView!)
     }
     
     
@@ -60,6 +80,17 @@ class BrowseController: UIViewController, MWPhotoBrowserDelegate {
         
         self.openImageViewer(result, currentURL: url)
     }
+    
+    
+    // MARK: - NJKWebViewProgressDelegate
+    
+    func webViewProgress(webViewProgress: NJKWebViewProgress!, updateProgress progress: Float) {
+        self.progressView!.setProgress(progress, animated: true)
+        self.title = self.webView.stringByEvaluatingJavaScriptFromString("document.title")
+    }
+    
+    
+    // MARK: - Private
     
     /**
     画像ビューワを表示
