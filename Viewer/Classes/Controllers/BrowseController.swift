@@ -15,6 +15,8 @@ import SwiftDate
 class BrowseController: UIViewController, MWPhotoBrowserDelegate, UIWebViewDelegate, NJKWebViewProgressDelegate {
     
     @IBOutlet private weak var webView: UIWebView!
+    @IBOutlet private weak var backButton: UIBarButtonItem!
+    @IBOutlet private weak var forwardButton: UIBarButtonItem!
     
     var URL: NSURL?
     
@@ -83,18 +85,18 @@ class BrowseController: UIViewController, MWPhotoBrowserDelegate, UIWebViewDeleg
             return
         }
         
-        let result: [String] = HTMLParser.parseImageURL(html!)
+        let result: [String] = HTMLParser.parseImageURL(html: html!)
         log.debug("result=\(result)")
         
         self.openImageViewer(result, currentURL: url)
     }
     
     @IBAction func onBackButton(sender: UIBarButtonItem) {
-        self.webView.goBack()
+        webView.goBack()
     }
     
     @IBAction func onForwardButton(sender: UIBarButtonItem) {
-        self.webView.goForward()
+        webView.goForward()
     }
     
     // MARK: - UIWebViewDelegate
@@ -105,6 +107,9 @@ class BrowseController: UIViewController, MWPhotoBrowserDelegate, UIWebViewDeleg
     
     func webViewDidFinishLoad(webView: UIWebView) {
         UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+        
+        backButton.enabled = webView.canGoBack
+        forwardButton.enabled = webView.canGoForward
     }
     
     func webView(webView: UIWebView, didFailLoadWithError error: NSError?) {

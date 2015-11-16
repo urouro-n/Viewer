@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="ozr-ca-7HU">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9060" systemVersion="14F1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="ozr-ca-7HU">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
     </dependencies>
     <scenes>
         <!--Top Controller-->
@@ -362,39 +362,30 @@
                                     <constraint firstAttribute="height" constant="44" id="WEg-eK-OFz"/>
                                 </constraints>
                                 <items>
-                                    <barButtonItem systemItem="flexibleSpace" id="hZV-ep-ElQ"/>
-                                    <barButtonItem title="＜" style="plain" id="S43-cy-73K">
+                                    <barButtonItem image="back-button" style="plain" id="h5t-Eq-m8U">
                                         <connections>
-                                            <action selector="onBackButton:" destination="wyO-XJ-Mam" id="wLA-zl-ItE"/>
+                                            <action selector="onBackButton:" destination="wyO-XJ-Mam" id="zKe-ka-4oQ"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem width="36" systemItem="fixedSpace" id="bF8-DK-3na"/>
-                                    <barButtonItem title="＞" id="Fgp-gt-kYl">
+                                    <barButtonItem width="22" style="plain" systemItem="fixedSpace" id="aTQ-wW-fdX"/>
+                                    <barButtonItem image="forward-button" style="plain" id="mPs-LJ-elC">
                                         <connections>
-                                            <action selector="onForwardButton:" destination="wyO-XJ-Mam" id="aGP-gF-Rzj"/>
+                                            <action selector="onForwardButton:" destination="wyO-XJ-Mam" id="y8f-t6-T87"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem systemItem="flexibleSpace" id="Y4g-bj-wwt"/>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="dKE-B9-aHC"/>
+                                    <barButtonItem image="image-get-button" style="plain" id="CPH-Ak-nuL">
+                                        <connections>
+                                            <action selector="onImageGetButton:" destination="wyO-XJ-Mam" id="Hbp-OD-Wz8"/>
+                                        </connections>
+                                    </barButtonItem>
                                 </items>
                             </toolbar>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pYr-mw-iHG">
-                                <rect key="frame" x="303" y="551" width="64" height="64"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="64" id="V4v-Q4-NhC"/>
-                                    <constraint firstAttribute="height" constant="64" id="tzq-iI-Ya5"/>
-                                </constraints>
-                                <state key="normal" image="image-get-button"/>
-                                <connections>
-                                    <action selector="onImageGetButton:" destination="wyO-XJ-Mam" eventType="touchUpInside" id="7LT-mO-RAX"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="bsk-as-kiz" secondAttribute="trailing" id="0Ty-ek-NOa"/>
-                            <constraint firstItem="bsk-as-kiz" firstAttribute="top" secondItem="pYr-mw-iHG" secondAttribute="bottom" constant="8" id="FaO-5m-FhU"/>
                             <constraint firstItem="bsk-as-kiz" firstAttribute="leading" secondItem="0rm-xa-7p2" secondAttribute="leading" id="Ssw-vw-NVX"/>
-                            <constraint firstAttribute="trailing" secondItem="pYr-mw-iHG" secondAttribute="trailing" constant="8" id="Zza-bc-450"/>
                             <constraint firstItem="tOg-r9-yFC" firstAttribute="top" secondItem="bsk-as-kiz" secondAttribute="bottom" id="fzR-UC-FBc"/>
                             <constraint firstItem="God-ir-Hr0" firstAttribute="leading" secondItem="0rm-xa-7p2" secondAttribute="leading" id="i43-WC-PjX"/>
                             <constraint firstItem="God-ir-Hr0" firstAttribute="top" secondItem="X1P-xY-ZVa" secondAttribute="bottom" constant="-64" id="q7a-R7-7eE"/>
@@ -404,6 +395,8 @@
                     </view>
                     <navigationItem key="navigationItem" id="iwG-6n-GDe"/>
                     <connections>
+                        <outlet property="backButton" destination="h5t-Eq-m8U" id="EUl-sW-ub9"/>
+                        <outlet property="forwardButton" destination="mPs-LJ-elC" id="Vfl-zu-K2F"/>
                         <outlet property="webView" destination="God-ir-Hr0" id="ITc-Y7-NJh"/>
                     </connections>
                 </viewController>
@@ -471,7 +464,9 @@
         </scene>
     </scenes>
     <resources>
-        <image name="image-get-button" width="64" height="64"/>
+        <image name="back-button" width="17" height="17"/>
+        <image name="forward-button" width="17" height="17"/>
+        <image name="image-get-button" width="32" height="32"/>
         <image name="more-button" width="41" height="41"/>
         <image name="search-button-small" width="28" height="28"/>
     </resources>
