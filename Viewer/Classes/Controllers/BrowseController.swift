@@ -27,26 +27,26 @@ class BrowseController: UIViewController, MWPhotoBrowserDelegate, UIWebViewDeleg
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.progressProxy = NJKWebViewProgress()
-        self.webView.delegate = self.progressProxy
-        self.progressProxy!.webViewProxyDelegate = self
-        self.progressProxy!.progressDelegate = self
+        progressProxy = NJKWebViewProgress()
+        webView.delegate = progressProxy
+        progressProxy!.webViewProxyDelegate = self
+        progressProxy!.progressDelegate = self
         
         let progressBarHeight: CGFloat = 2.0
-        let navigationBarBounds: CGRect = (self.navigationController?.navigationBar.bounds)!
+        let navigationBarBounds: CGRect = (navigationController?.navigationBar.bounds)!
         let barFrame: CGRect = CGRectMake(0, navigationBarBounds.size.height - progressBarHeight, navigationBarBounds.size.width, progressBarHeight)
-        self.progressView = NJKWebViewProgressView(frame: barFrame)
-        self.progressView!.autoresizingMask = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleTopMargin]
+        progressView = NJKWebViewProgressView(frame: barFrame)
+        progressView!.autoresizingMask = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleTopMargin]
         
         let closeItem: UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "close-button"), style: UIBarButtonItemStyle.Plain, target: self, action: "onCloseItem:")
         closeItem.tintColor = UIColor.appLightGrayColor()
-        self.navigationItem.leftBarButtonItem = closeItem
+        navigationItem.leftBarButtonItem = closeItem
         
         let shareItem: UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "share-button"), style: .Plain, target: self, action: "onShareItem:")
         shareItem.tintColor = UIColor.appLightGrayColor()
-        self.navigationItem.rightBarButtonItem = shareItem
+        navigationItem.rightBarButtonItem = shareItem
         
-        self.webView.loadRequest(NSURLRequest(URL: self.URL!))
+        webView.loadRequest(NSURLRequest(URL: URL!))
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -54,7 +54,7 @@ class BrowseController: UIViewController, MWPhotoBrowserDelegate, UIWebViewDeleg
         
         NSURLProtocol.registerClass(FilteringURLProtocol) // Ad block
         
-        self.navigationController?.navigationBar.addSubview(self.progressView!)
+        self.navigationController?.navigationBar.addSubview(progressView!)
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -67,7 +67,7 @@ class BrowseController: UIViewController, MWPhotoBrowserDelegate, UIWebViewDeleg
     // MARK: - Action
     
     func onCloseItem(sender: UIBarButtonItem) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        dismissViewControllerAnimated(true, completion: nil)
     }
     
     func onShareItem(sender: UIBarButtonItem) {
@@ -75,20 +75,27 @@ class BrowseController: UIViewController, MWPhotoBrowserDelegate, UIWebViewDeleg
     }
     
     @IBAction func onImageGetButton(sender: UIButton) {
-        let html: String? = self.webView!.stringByEvaluatingJavaScriptFromString("document.body.innerHTML")
-        var url: String? = self.webView!.stringByEvaluatingJavaScriptFromString("location.protocol")
+        let html: String? = webView!.stringByEvaluatingJavaScriptFromString("document.body.innerHTML")
+        var url: String? = webView!.stringByEvaluatingJavaScriptFromString("location.protocol")
         url = (url != nil) ? url! + "//" : nil
-        url = (url != nil) ? url! + self.webView!.stringByEvaluatingJavaScriptFromString("location.host")! : nil
+        url = (url != nil) ? url! + webView!.stringByEvaluatingJavaScriptFromString("location.host")! : nil
         
         if html == nil || url == nil {
             log.debug("HTML body or url nil")
             return
         }
         
-        let result: [String] = HTMLParser.parseImageURL(html: html!)
-        log.debug("result=\(result)")
+        SVProgressHUD.show()
         
-        self.openImageViewer(result, currentURL: url)
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            let result: [String] = HTMLParser.parseImageURL(html: html!)
+            log.debug("result=\(result)")
+            
+            dispatch_sync(dispatch_get_main_queue(), { [unowned self] in
+                SVProgressHUD.dismiss()
+                self.openImageViewer(result, currentURL: url)
+            })
+        })
     }
     
     @IBAction func onBackButton(sender: UIBarButtonItem) {
@@ -120,8 +127,8 @@ class BrowseController: UIViewController, MWPhotoBrowserDelegate, UIWebViewDeleg
     // MARK: - NJKWebViewProgressDelegate
     
     func webViewProgress(webViewProgress: NJKWebViewProgress!, updateProgress progress: Float) {
-        self.progressView!.setProgress(progress, animated: true)
-        self.title = self.webView.stringByEvaluatingJavaScriptFromString("document.title")
+        progressView!.setProgress(progress, animated: true)
+        title = webView.stringByEvaluatingJavaScriptFromString("document.title")
     }
     
     
@@ -135,7 +142,7 @@ class BrowseController: UIViewController, MWPhotoBrowserDelegate, UIWebViewDeleg
     private func openImageViewer(URLs: [String], currentURL: String?) {
         SVProgressHUD.showWithStatus(String(URLs.count) + "枚の画像を読込中...")
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { [unowned self] in
             self.photos.removeAll(keepCapacity: false)
             
             for var i: Int = 0; i < URLs.count; i++ {
@@ -181,7 +188,7 @@ class BrowseController: UIViewController, MWPhotoBrowserDelegate, UIWebViewDeleg
                 self.photos.append(photo)
             }
             
-            dispatch_sync(dispatch_get_main_queue(), {
+            dispatch_sync(dispatch_get_main_queue(), { [unowned self] in
                 
                 SVProgressHUD.dismiss()
                 
@@ -211,12 +218,12 @@ class BrowseController: UIViewController, MWPhotoBrowserDelegate, UIWebViewDeleg
     // MARK: - MWPhotoBrowserDelegate
     
     func numberOfPhotosInPhotoBrowser(photoBrowser: MWPhotoBrowser!) -> UInt {
-        return UInt(self.photos.count)
+        return UInt(photos.count)
     }
     
     func photoBrowser(photoBrowser: MWPhotoBrowser!, photoAtIndex index: UInt) -> MWPhotoProtocol! {
-        if Int(index) < self.photos.count {
-            return self.photos[Int(index)]
+        if Int(index) < photos.count {
+            return photos[Int(index)]
         }
         
         return nil
@@ -224,9 +231,9 @@ class BrowseController: UIViewController, MWPhotoBrowserDelegate, UIWebViewDeleg
     
     func photoBrowser(photoBrowser: MWPhotoBrowser!, actionButtonPressedForPhotoAtIndex index: UInt) {
         /**
-        画像を Documents に保存
-        */
-        let photo: MWPhoto = self.photos[Int(index)]
+         画像を Documents に保存
+         */
+        let photo: MWPhoto = photos[Int(index)]
         let image: UIImage = photo.image
         let imageData: NSData = UIImagePNGRepresentation(image)!
         
@@ -235,7 +242,7 @@ class BrowseController: UIViewController, MWPhotoBrowserDelegate, UIWebViewDeleg
         let imageName: NSString = photo.caption
         let date: NSDate = NSDate()
         let folderName: NSString = NSString(format: "%04d%02d%02d", date.year, date.month, date.day)
-        let folderPath: NSString = self.documentsDirectory + "/" + (folderName as String)
+        let folderPath: NSString = documentsDirectory + "/" + (folderName as String)
         log.debug("folderPath=\(folderPath)")
         
         if NSFileManager.defaultManager().fileExistsAtPath(folderPath as String) == false {

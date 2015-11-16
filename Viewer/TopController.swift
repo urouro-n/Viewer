@@ -23,10 +23,10 @@ class TopController: UIViewController, UITableViewDataSource, UITableViewDelegat
         /**
         cf. https://github.com/brynbodayle/BABFrameObservingInputAccessoryView
         */
-        self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissMode.Interactive
-        let inputView: BABFrameObservingInputAccessoryView = BABFrameObservingInputAccessoryView(frame: CGRect(x: 0.0, y: 0.0, width: self.view.bounds.size.width, height: 44.0))
+        tableView.keyboardDismissMode = UIScrollViewKeyboardDismissMode.Interactive
+        let inputView: BABFrameObservingInputAccessoryView = BABFrameObservingInputAccessoryView(frame: CGRect(x: 0.0, y: 0.0, width: view.bounds.size.width, height: 44.0))
         inputView.userInteractionEnabled = false
-        self.textField.inputAccessoryView = inputView
+        textField.inputAccessoryView = inputView
         
         inputView.keyboardFrameChangedBlock = { [unowned self] (keyboardVisible: Bool, keyboardFrame: CGRect) in
             let value: CGFloat = CGRectGetHeight(self.view.frame) - CGRectGetMinY(keyboardFrame)
@@ -38,21 +38,24 @@ class TopController: UIViewController, UITableViewDataSource, UITableViewDelegat
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.navigationController?.setNavigationBarHidden(true, animated: false)
+        navigationController?.setNavigationBarHidden(true, animated: false)
         
-        self.reloadData()
+        reloadData()
     }
     
     
     // MARK: - Action
     
     @IBAction func onSearchButton(sender: UIButton) {
-        if let text = self.textField.text {
-            if text.characters.count > 0 {
-                self.view.endEditing(true)
-                self.performSegueWithIdentifier("TopToBrowse", sender: text)
-            }
+        guard let text = textField.text else {
+            return
         }
+        guard text.characters.count > 0 else {
+            return
+        }
+        
+        view.endEditing(true)
+        performSegueWithIdentifier("TopToBrowse", sender: text)
     }
     
     @IBAction func onMoreButton(sender: UIButton) {
@@ -66,7 +69,7 @@ class TopController: UIViewController, UITableViewDataSource, UITableViewDelegat
         if segue.identifier == "TopToImageList" {
             let controller: ImageListController = segue.destinationViewController as! ImageListController
             let directory: String = sender as! String
-            controller.directory = (self.documentsDirectory as NSString).stringByAppendingPathComponent(directory)
+            controller.directory = (documentsDirectory as NSString).stringByAppendingPathComponent(directory)
         } else if segue.identifier == "TopToBrowse" {
             if let urlString = sender as? String {
                 var url: String = urlString
@@ -90,13 +93,13 @@ class TopController: UIViewController, UITableViewDataSource, UITableViewDelegat
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.directories.count
+        return directories.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell: DayCell = tableView.dequeueReusableCellWithIdentifier("DayCell") as! DayCell
         
-        cell.titleLabel.text = self.directories[indexPath.row]
+        cell.titleLabel.text = directories[indexPath.row]
         
         // TODO: show number of images
         cell.countLabel.text = ""
@@ -108,7 +111,7 @@ class TopController: UIViewController, UITableViewDataSource, UITableViewDelegat
     // MARK: - UITableViewDelegate
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let directory: String = self.directories[indexPath.row]
+        let directory: String = directories[indexPath.row]
         
         self.performSegueWithIdentifier("TopToImageList", sender: directory)
     }
@@ -117,12 +120,15 @@ class TopController: UIViewController, UITableViewDataSource, UITableViewDelegat
     // MARK: - UITextFieldDelegate
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
-        if let text = textField.text {
-            if text.characters.count > 0 {
-                self.view.endEditing(true)
-                self.performSegueWithIdentifier("TopToBrowse", sender: text)
-            }
+        guard let text = textField.text else {
+            return true
         }
+        guard text.characters.count > 0 else {
+            return true
+        }
+        
+        view.endEditing(true)
+        performSegueWithIdentifier("TopToBrowse", sender: text)
         
         return true
     }
@@ -132,27 +138,27 @@ class TopController: UIViewController, UITableViewDataSource, UITableViewDelegat
     
     private func reloadData() {
         /**
-        * Documents 下のディレクトリの一覧を取得す
+        * Documents 下のディレクトリの一覧を取得する
         */
-        self.directories.removeAll(keepCapacity: false)
+        directories.removeAll(keepCapacity: false)
         
-        let items: [AnyObject]? = try! NSFileManager.defaultManager().contentsOfDirectoryAtPath(self.documentsDirectory)
+        let items: [AnyObject]? = try! NSFileManager.defaultManager().contentsOfDirectoryAtPath(documentsDirectory)
         
         if items != nil {
             for item: String in items as! [String] {
-                let path: String = (self.documentsDirectory as NSString).stringByAppendingPathComponent(item)
+                let path: String = (documentsDirectory as NSString).stringByAppendingPathComponent(item)
                 var isDirectory: ObjCBool = false
                 NSFileManager.defaultManager().fileExistsAtPath(path, isDirectory: &isDirectory)
                 
                 if isDirectory {
-                    self.directories.append(item)
+                    directories.append(item)
                 }
             }
         }
         
-        log.debug("directories=\(self.directories)")
+        log.debug("directories=\(directories)")
         
-        self.tableView.reloadData()
+        tableView.reloadData()
     }
     
 }

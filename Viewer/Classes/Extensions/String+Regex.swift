@@ -26,7 +26,7 @@ extension String {
         if let regex: NSRegularExpression = regex {
             matches = regex.numberOfMatchesInString(self,
                 options: NSMatchingOptions.ReportProgress,
-                range: NSMakeRange(0, self.characters.count))
+                range: NSMakeRange(0, characters.count))
         }
         
         return matches > 0

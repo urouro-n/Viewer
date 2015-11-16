@@ -19,20 +19,18 @@ class SearchController: UIViewController, UITableViewDataSource, UITableViewDele
         
         let closeItem: UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "close-button"), style: UIBarButtonItemStyle.Plain, target: self, action: "onCloseItem:")
         closeItem.tintColor = UIColor.appLightGrayColor()
-        self.navigationItem.leftBarButtonItem = closeItem
-        
-        
+        navigationItem.leftBarButtonItem = closeItem
     }
     
     
     // MARK: - Action
     
     func onCloseItem(sender: UIBarButtonItem) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        dismissViewControllerAnimated(true, completion: nil)
     }
     
     @IBAction func onSearchButton(sender: UIButton) {
-        self.performSegueWithIdentifier("SearchToBrowse", sender: nil)
+        performSegueWithIdentifier("SearchToBrowse", sender: nil)
     }
     
     

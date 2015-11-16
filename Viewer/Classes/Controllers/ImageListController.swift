@@ -17,41 +17,41 @@ class ImageListController: UICollectionViewController, MWPhotoBrowserDelegate {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.navigationController?.setNavigationBarHidden(false, animated: false)
+        navigationController?.setNavigationBarHidden(false, animated: false)
         
-        self.reloadData()
+        reloadData()
     }
     
     
     // MARK: - UICollectionViewDataSource
     
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.images.count
+        return images.count
     }
     
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell: ImageListCell = self.collectionView?.dequeueReusableCellWithReuseIdentifier("ImageListCell", forIndexPath: indexPath) as! ImageListCell
+        let cell: ImageListCell = collectionView.dequeueReusableCellWithReuseIdentifier("ImageListCell", forIndexPath: indexPath) as! ImageListCell
         
-        let image: MWPhoto = self.images[indexPath.item]
+        let image: MWPhoto = images[indexPath.item]
         cell.imageView.image = image.image
         
         return cell
     }
     
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        self.openPhotoBrowser(indexPath.item)
+        openPhotoBrowser(indexPath.item)
     }
     
     
     // MARK: - MWPhotoBrowserDelegate
     
     func numberOfPhotosInPhotoBrowser(photoBrowser: MWPhotoBrowser!) -> UInt {
-        return UInt(self.images.count)
+        return UInt(images.count)
     }
     
     func photoBrowser(photoBrowser: MWPhotoBrowser!, photoAtIndex index: UInt) -> MWPhotoProtocol! {
-        if Int(index) < self.images.count {
-            return self.images[Int(index)]
+        if Int(index) < images.count {
+            return images[Int(index)]
         }
         
         return nil
@@ -61,33 +61,33 @@ class ImageListController: UICollectionViewController, MWPhotoBrowserDelegate {
     // MARK: - Private Methods
     
     private func reloadData() {
-        if self.directory == nil {
+        if directory == nil {
             log.error("directory is nil")
             return
         }
         
-        let items: [AnyObject]? = try! NSFileManager.defaultManager().contentsOfDirectoryAtPath(self.directory!)
+        let items: [AnyObject]? = try! NSFileManager.defaultManager().contentsOfDirectoryAtPath(directory!)
         
         if items == nil {
             log.error("items=\(items)")
             return
         }
         
-        self.images.removeAll(keepCapacity: false)
+        images.removeAll(keepCapacity: false)
         
         for item: String in items as! [String] {
-            let fileURL: NSURL? = NSURL(fileURLWithPath: (self.directory! as NSString).stringByAppendingPathComponent(item))
+            let fileURL: NSURL? = NSURL(fileURLWithPath: (directory! as NSString).stringByAppendingPathComponent(item))
             
             if let url = fileURL {
                 let image: UIImage = UIImage(contentsOfFile: url.path!)!
                 let photo: MWPhoto = MWPhoto(image: image)
-                self.images.append(photo)
+                images.append(photo)
             }
         }
         
-        log.debug("images=\(self.images)")
+        log.debug("images=\(images)")
         
-        self.collectionView?.reloadData()
+        collectionView?.reloadData()
     }
     
     private func openPhotoBrowser(index: Int) {
@@ -95,7 +95,7 @@ class ImageListController: UICollectionViewController, MWPhotoBrowserDelegate {
         browser.displayNavArrows = true
         browser.setCurrentPhotoIndex(UInt(index))
         
-        self.navigationController?.pushViewController(browser, animated: true)
+        navigationController?.pushViewController(browser, animated: true)
     }
     
 }

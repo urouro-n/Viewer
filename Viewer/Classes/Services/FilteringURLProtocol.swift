@@ -28,10 +28,10 @@ class FilteringURLProtocol : NSURLProtocol {
     }
     
     override func startLoading() {
-        let response = NSURLResponse(URL: self.request.URL!, MIMEType: nil, expectedContentLength: 0, textEncodingName: nil)
-        self.client?.URLProtocol(self, didReceiveResponse: response, cacheStoragePolicy: NSURLCacheStoragePolicy.NotAllowed)
-        self.client?.URLProtocol(self, didLoadData: NSData(bytes: nil, length: 0))
-        self.client?.URLProtocolDidFinishLoading(self)
+        let response = NSURLResponse(URL: request.URL!, MIMEType: nil, expectedContentLength: 0, textEncodingName: nil)
+        client?.URLProtocol(self, didReceiveResponse: response, cacheStoragePolicy: NSURLCacheStoragePolicy.NotAllowed)
+        client?.URLProtocol(self, didLoadData: NSData(bytes: nil, length: 0))
+        client?.URLProtocolDidFinishLoading(self)
     }
     
     override func stopLoading() {}
